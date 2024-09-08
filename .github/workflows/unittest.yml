@@ -38,6 +38,12 @@ jobs:
       # Step4: Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      # Step3&4: Install pip & dependencies if we want to combine two commands use pipe symbol at run |
+      # - name: Install dependencies
+      #  run: |
+       # python -m pip install --upgrade pip
+       # pip install -r requirements.txt
           
       # Step5: Run tests
       - name: Run tests #it checks tests folder
