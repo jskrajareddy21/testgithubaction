@@ -12,8 +12,13 @@ on: #define events when workflow wants to trigger. here push and pull to main br
       - qa
 
 jobs:
-  test:
-    runs-on: ubuntu-latest #container creating for running actions we can also use windows or mac-os
+  unittesting:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [ '3.9' ]
+        os: [ ubuntu-latest ] #container creating for running actions we can also use windows or mac-os
 
     steps:
       # Step1: check out the code from the repository
@@ -26,12 +31,14 @@ jobs:
         with:
           python-version: '3.12'
 
-      # Step3: Install dependencies
-      - name: Install dependeincies
-        run:
-          python3 -m pip install --upgrade pip
-          python3 install -r requirements.txt
+      # Step3: Install pip
+      - name: Install pip
+        run: python -m pip install --upgrade pip
 
-      # Step4: Run tests
+      # Step4: Install dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+          
+      # Step5: Run tests
       - name: Run tests #it checks tests folder
         run: pytest
